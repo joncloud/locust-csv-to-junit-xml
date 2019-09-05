@@ -56,13 +56,22 @@ def append_testcases(prefix, testsuite):
 
         line_count = 0
         for row in csv_reader:
+
             if line_count > 0:
-                testcase = ET.SubElement(testsuite, 'testcase')
-                name = f'{row["Method"]}\t{row["Name"]} Average response time'
-                testcase.set('name', name)
-                test_count += int(row['# requests'])
-                failure_count += int(row['# failures'])
-                testcase.set('time', row['Average response time'])
+                row_method = row['Method']
+                row_name = row['Name']
+
+                if row_method != 'None' and row_name != 'Total':
+                    testcase = ET.SubElement(testsuite, 'testcase')
+
+                    name = f'{row_method}\t{row_name} Average response time'
+                    testcase.set('name', name)
+
+                    test_count += int(row['# requests'])
+                    failure_count += int(row['# failures'])
+                    avg_response_s = float(row['Average response time']) / 1000
+                    testcase.set('time', str(avg_response_s))
+
             line_count += 1
 
         testsuite.set('tests', str(test_count))
