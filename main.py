@@ -51,14 +51,14 @@ def append_testcases(prefix, testsuite):
     test_count = 0
     failure_count = 0
 
-    with open(prefix + '_requests.csv', mode='r') as csv_file:
+    with open(prefix + '_stats.csv', mode='r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
 
         line_count = 0
         for row in csv_reader:
 
             if line_count > 0:
-                row_method = row['Method']
+                row_method = row['Type']
                 row_name = row['Name']
 
                 if row_method != 'None' and row_name != 'Total':
@@ -67,9 +67,9 @@ def append_testcases(prefix, testsuite):
                     name = f'{row_method}\t{row_name} Average response time'
                     testcase.set('name', name)
 
-                    test_count += int(row['# requests'])
-                    failure_count += int(row['# failures'])
-                    avg_response_s = float(row['Average response time']) / 1000
+                    test_count += int(row['Request Count'])
+                    failure_count += int(row['Failure Count'])
+                    avg_response_s = float(row['Average Response Time']) / 1000
                     testcase.set('time', str(avg_response_s))
 
             line_count += 1
