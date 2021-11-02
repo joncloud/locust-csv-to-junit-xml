@@ -3,6 +3,7 @@
 import csv
 import datetime
 import getopt
+import os
 import sys
 import xml.etree.ElementTree as ET
 
@@ -29,7 +30,7 @@ def main(argv):
     append_testcases(prefix, testsuite)
 
     xml_tree = ET.ElementTree(testsuites)
-    xml_tree.write("test_results.xml")
+    xml_tree.write(os.getcwd() + '\\' + 'test_results.xml')
 
 
 def create_testsuites():
@@ -51,7 +52,7 @@ def append_testcases(prefix, testsuite):
     test_count = 0
     failure_count = 0
 
-    with open(prefix + '_stats.csv', mode='r') as csv_file:
+    with open(os.getcwd() + '\\' + prefix + '_stats.csv', mode='r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
 
         line_count = 0
