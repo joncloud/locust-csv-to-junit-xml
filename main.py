@@ -30,7 +30,8 @@ def main(argv):
     append_testcases(prefix, testsuite)
 
     xml_tree = ET.ElementTree(testsuites)
-    xml_tree.write(os.getcwd() + '\\' + 'test_results.xml')
+    xml_file_path = os.path.join(os.getcwd(), 'test_results.xml')
+    xml_tree.write(xml_file_path)
 
 
 def create_testsuites():
@@ -51,8 +52,9 @@ def create_testsuites():
 def append_testcases(prefix, testsuite):
     test_count = 0
     failure_count = 0
+    csv_file_path = os.path.join(os.getcwd(), prefix + '_stats.csv')
 
-    with open(os.getcwd() + '\\' + prefix + '_stats.csv', mode='r') as csv_file:
+    with open(csv_file_path, mode='r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
 
         line_count = 0
