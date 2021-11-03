@@ -12,7 +12,7 @@ def main(argv):
     prefix = ''
 
     try:
-        opts, _ = getopt.getopt(sys.argv[1:], 'hp:', ['prefix='])
+        opts, _ = getopt.getopt(argv, 'hp:', ['prefix='])
     except getopt.GetoptError:
         print('main.py -p <prefix>')
         sys.exit(2)
@@ -57,25 +57,21 @@ def append_testcases(prefix, testsuite):
     with open(csv_file_path, mode='r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
 
-        line_count = 0
         for row in csv_reader:
 
-            if line_count > 0:
-                row_method = row['Type']
-                row_name = row['Name']
+            row_method = row['Type']
+            row_name = row['Name']
 
-                if row_method != 'None' and row_name != 'Total':
-                    testcase = ET.SubElement(testsuite, 'testcase')
+            if row_method != '' and row_method != 'None' and row_name != 'Total':
+                testcase = ET.SubElement(testsuite, 'testcase')
 
-                    name = f'{row_method}\t{row_name} Average response time'
-                    testcase.set('name', name)
+                name = f'{row_method}\t{row_name} Average response time'
+                testcase.set('name', name)
 
-                    test_count += int(row['Request Count'])
-                    failure_count += int(row['Failure Count'])
-                    avg_response_s = float(row['Average Response Time']) / 1000
-                    testcase.set('time', str(avg_response_s))
-
-            line_count += 1
+                test_count += int(row['Request Count'])
+                failure_count += int(row['Failure Count'])
+                avg_response_s = float(row['Average Response Time']) / 1000
+                testcase.set('time', str(avg_response_s))
 
         testsuite.set('tests', str(test_count))
         testsuite.set('failures', str(failure_count))
