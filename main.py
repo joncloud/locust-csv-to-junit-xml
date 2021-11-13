@@ -3,6 +3,7 @@
 import csv
 import datetime
 import getopt
+import os
 import sys
 import xml.etree.ElementTree as ET
 
@@ -29,7 +30,8 @@ def main(argv):
     append_testcases(prefix, testsuite)
 
     xml_tree = ET.ElementTree(testsuites)
-    xml_tree.write("test_results.xml")
+    xml_file_path = os.path.join(os.getcwd(), 'test_results.xml')
+    xml_tree.write(xml_file_path)
 
 
 def create_testsuites():
@@ -50,15 +52,16 @@ def create_testsuites():
 def append_testcases(prefix, testsuite):
     test_count = 0
     failure_count = 0
+    csv_file_path = os.path.join(os.getcwd(), prefix + '_stats.csv')
 
-    with open(prefix + '_requests.csv', mode='r') as csv_file:
+    with open(csv_file_path, mode='r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
 
         line_count = 0
         for row in csv_reader:
 
             if line_count > 0:
-                row_method = row['Method']
+                row_method = row['Type']
                 row_name = row['Name']
 
                 if row_method != 'None' and row_name != 'Total':
@@ -67,9 +70,9 @@ def append_testcases(prefix, testsuite):
                     name = f'{row_method}\t{row_name} Average response time'
                     testcase.set('name', name)
 
-                    test_count += int(row['# requests'])
-                    failure_count += int(row['# failures'])
-                    avg_response_s = float(row['Average response time']) / 1000
+                    test_count += int(row['Request Count'])
+                    failure_count += int(row['Failure Count'])
+                    avg_response_s = float(row['Average Response Time']) / 1000
                     testcase.set('time', str(avg_response_s))
 
             line_count += 1
