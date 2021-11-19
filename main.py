@@ -51,30 +51,35 @@ def create_testsuites():
 
 def append_testcases(prefix, testsuite):
     test_count = 0
-    failure_count = 0
+    testsuite_failure_count = 0
     csv_file_path = os.path.join(os.getcwd(), prefix + '_stats.csv')
 
     with open(csv_file_path, mode='r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
 
         for row in csv_reader:
-
             row_method = row['Type']
             row_name = row['Name']
 
             if row_method != '' and row_method != 'None' and row_name != 'Total':
                 testcase = ET.SubElement(testsuite, 'testcase')
-
-                name = f'{row_method}\t{row_name} Average response time'
+                name = f'{row_method}: {row_name}'
                 testcase.set('name', name)
-
                 test_count += int(row['Request Count'])
-                failure_count += int(row['Failure Count'])
+                testcase.set('tests', str(test_count))
+                testcase_failure_count = int(row['Failure Count'])
+                testsuite_failure_count += testcase_failure_count
+                testcase.set('failures', str(testcase_failure_count))
+
+                if testcase_failure_count > 0:
+                    failure = ET.SubElement(testcase, 'failure')
+                    failure.set('message', '')
+
                 avg_response_s = float(row['Average Response Time']) / 1000
                 testcase.set('time', str(avg_response_s))
 
         testsuite.set('tests', str(test_count))
-        testsuite.set('failures', str(failure_count))
+        testsuite.set('failures', str(testsuite_failure_count))
 
 
 if __name__ == '__main__':
