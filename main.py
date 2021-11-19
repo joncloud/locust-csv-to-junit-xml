@@ -58,16 +58,13 @@ def append_testcases(prefix, testsuite):
         csv_reader = csv.DictReader(csv_file)
 
         for row in csv_reader:
-
             row_method = row['Type']
             row_name = row['Name']
 
             if row_method != '' and row_method != 'None' and row_name != 'Total':
                 testcase = ET.SubElement(testsuite, 'testcase')
-
                 name = f'{row_method}: {row_name}'
                 testcase.set('name', name)
-
                 test_count += int(row['Request Count'])
                 testcase.set('tests', str(test_count))
                 testcase_failure_count = int(row['Failure Count'])

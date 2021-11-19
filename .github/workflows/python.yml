@@ -1,0 +1,37 @@
+name: Python CI
+
+on:
+  push:
+    branches: [ publish ]
+  pull_request:
+    branches: [ publish ]
+
+jobs:
+  build:
+    runs-on: 'ubuntu-20.04'
+
+    steps:
+    - uses: 'actions/checkout@v2'
+
+    - name: 'Use Python 3.9'
+      uses: 'actions/setup-python@v2'
+      with:
+        python-version: '3.9'
+
+    - name: 'Installs requirements.txt'
+      run: pip install -r ./requirements.txt
+
+    - name: 'Prep Tests'
+      run: bash ./prep.sh
+
+    - name: 'Run Tests'
+      run: nose2 -v --config ./unittest.cfg main_test
+
+    - name: 'Publish Tests'
+      uses: 'dorny/test-reporter@v1'
+      # run this step even if previous step failed
+      if: ${{ !env.ACT }} && (success() || failure())
+      with:
+        name: Tests
+        path: 'nose2-junit.xml'
+        reporter: java-junit
