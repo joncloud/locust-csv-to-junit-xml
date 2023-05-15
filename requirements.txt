@@ -4,6 +4,8 @@
 #
 #    pip-compile --extra=dev --output-file=requirements.txt pyproject.toml
 #
+blinker==1.6.2
+    # via flask
 brotli==1.0.9
     # via geventhttpclient
 certifi==2022.12.7
@@ -18,7 +20,7 @@ configargparse==1.5.3
     # via locust
 coverage==7.2.5
     # via nose2
-flask===2.0.2
+flask===2.3.2
     # via
     #   flask-basicauth
     #   flask-cors
@@ -40,6 +42,8 @@ greenlet==2.0.2
     # via gevent
 idna==3.4
     # via requests
+importlib-metadata==6.6.0
+    # via flask
 itsdangerous==2.1.2
     # via flask
 jinja2==3.1.2
@@ -73,10 +77,12 @@ typing-extensions==4.5.0
     # via locust
 urllib3==1.26.15
     # via requests
-werkzeug==2.3.2
+werkzeug==2.3.4
     # via
     #   flask
     #   locust
+zipp==3.15.0
+    # via importlib-metadata
 zope-event==4.6
     # via gevent
 zope-interface==6.0
