@@ -9,7 +9,7 @@ dependencies = []
 
 [project.optional-dependencies]
 dev = [
-  "flask===2.0.2",
+  "flask===2.3.2",
   "junitparser===2.1.1",
   "locust===2.4.3",
   "nose2===0.10.0",
