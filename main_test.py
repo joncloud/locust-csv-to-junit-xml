@@ -44,13 +44,13 @@ class TestMain(unittest.TestCase):
 
   def test_conversion(self):
     self.assert_file('prefix1', [
-      'GET\t/ Average response time',
-      'GET\t/fail Average response time',
+      'GET: /',
+      'GET: /fail',
     ])
 
     self.assert_file('prefix2', [
-      'GET\t/ Average response time',
-      'GET\t/fail Average response time',
+      'GET: /',
+      'GET: /fail',
     ])
     return
 
